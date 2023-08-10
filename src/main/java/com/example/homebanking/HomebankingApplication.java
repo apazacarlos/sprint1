@@ -2,14 +2,20 @@ package com.example.homebanking;
 
 import com.example.homebanking.models.Account;
 import com.example.homebanking.models.Client;
+import com.example.homebanking.models.Transaction;
 import com.example.homebanking.repositories.AccountRepository;
 import com.example.homebanking.repositories.ClientRepository;
+import com.example.homebanking.repositories.TransactionRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import static com.example.homebanking.models.TransactionType.CREDIT;
+import static com.example.homebanking.models.TransactionType.DEBIT;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -19,7 +25,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
 		return (args)-> {
 
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com");
@@ -42,6 +48,18 @@ public class HomebankingApplication {
 			accountRepository.save(account3);
 			accountRepository.save(account4);
 
+
+			Transaction transaction1 = new Transaction("Varios", CREDIT, 850.51, LocalDateTime.now());
+			account1.addTransaction(transaction1);
+			account1.setBalance(account1.getBalance()+transaction1.getAmount());
+			transactionRepository.save(transaction1);
+			accountRepository.save(account1);
+
+			Transaction transaction2 = new Transaction("Varios", DEBIT, 1594.68, LocalDateTime.now());
+			account3.addTransaction(transaction2);
+			account3.setBalance(account3.getBalance()-transaction2.getAmount());
+			transactionRepository.save(transaction2);
+			accountRepository.save(account3);
 		};
 	}
 

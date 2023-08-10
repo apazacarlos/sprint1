@@ -1,10 +1,13 @@
 package com.example.homebanking.models;
 
+import com.example.homebanking.repositories.TransactionRepository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -20,6 +23,9 @@ public class Account {
     private Double balance;
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")
+    private Set<Transaction> transactions = new HashSet<>();
 
     //constructores
     public Account(){}
@@ -66,5 +72,13 @@ public class Account {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Set<Transaction> getTransactions(){
+        return transactions;
+    }
+    public void addTransaction(Transaction transaction){
+        transaction.setAccount(this);
+        this.transactions.add(transaction);
     }
 }
