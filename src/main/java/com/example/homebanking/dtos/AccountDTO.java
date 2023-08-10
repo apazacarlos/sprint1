@@ -6,10 +6,9 @@ import java.time.LocalDate;
 
 public class AccountDTO {
     private Long id;
-
     private String number;
     private LocalDate creationDate;
-    private Float balance;
+    private Double balance;
 
     public AccountDTO(Account account) {
         id = account.getId();
@@ -31,7 +30,7 @@ public class AccountDTO {
         return creationDate;
     }
 
-    public Float getBalance() {
+    public Double getBalance() {
         return balance;
     }
 }

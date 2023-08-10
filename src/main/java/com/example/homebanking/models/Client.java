@@ -17,7 +17,7 @@ public class Client {
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
-    private String name, lastname, email;
+    private String firstName, lastName, email;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private Set<Account> accounts = new HashSet<>();
 
@@ -25,9 +25,9 @@ public class Client {
     public Client() {
     }
 
-    public Client(String name, String lastname, String email) {
-        this.name = name;
-        this.lastname = lastname;
+    public Client(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
     }
 
@@ -36,20 +36,20 @@ public class Client {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {

@@ -27,36 +27,18 @@ public class HomebankingApplication {
 			Client client1 = new Client("Carlos", "Apaza", "charlie@mindhub.com");
 			clientRepository.save(client1);
 
-			Account account1 = new Account();
-			account1.setNumber("VIN-001");
-			account1.setBalance(5000f);
-			account1.setLocalDate(LocalDate.now());
-			account1.setClient(client);
-			Account account2 = new Account();
-			account2.setNumber("VIN-002");
-			account2.setBalance(7500f);
-			account2.setLocalDate(LocalDate.now().plusDays(1));
-			account1.setClient(client);
-
+			Account account1 = new Account("VIN-001",5000d,LocalDate.now());
+			Account account2 = new Account("VIN-002",7500d,LocalDate.now().plusDays(1));
 			client.addAccount(account1);
 			client.addAccount(account2);
 			accountRepository.save(account1);
 			accountRepository.save(account2);
 
 
-			Account account3 = new Account();
-			account3.setNumber("VIN-001");
-			account3.setBalance(8000f);
-			account3.setLocalDate(LocalDate.now());
-			account3.setClient(client1);
-			Account account4 = new Account();
-			account4.setNumber("VIN-002");
-			account4.setBalance(15000f);
-			account4.setLocalDate(LocalDate.now().plusDays(1));
-			account4.setClient(client1);
-
-			client.addAccount(account3);
-			client.addAccount(account4);
+			Account account3 = new Account("VIN-001",4000d,LocalDate.now());
+			Account account4 = new Account("VIN-002",3500d,LocalDate.now().plusDays(1));
+			client1.addAccount(account3);
+			client1.addAccount(account4);
 			accountRepository.save(account3);
 			accountRepository.save(account4);
 

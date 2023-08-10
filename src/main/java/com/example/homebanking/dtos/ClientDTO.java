@@ -2,7 +2,6 @@ package com.example.homebanking.dtos;
 
 import com.example.homebanking.models.Client;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,13 +9,13 @@ public class ClientDTO {
 
     private Long id;
 
-    private String name, lastname, email;
+    private String firstName, lastName, email;
     private Set<AccountDTO> accounts;
 
     public ClientDTO(Client client){
         id= client.getId();
-        name = client.getName();
-        lastname = client.getLastname();
+        firstName = client.getFirstName();
+        lastName = client.getLastName();
         email = client.getEmail();
         accounts = client.getAccounts()
                 .stream()
@@ -26,12 +25,12 @@ public class ClientDTO {
 
     public Long getId(){return id;}
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getEmail() {

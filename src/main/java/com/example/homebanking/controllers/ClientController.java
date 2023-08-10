@@ -4,6 +4,7 @@ import com.example.homebanking.dtos.ClientDTO;
 import com.example.homebanking.models.Client;
 import com.example.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,5 +26,12 @@ public class ClientController {
                 .map(client -> new ClientDTO(client))
                 .collect(Collectors.toList());
         return listClientDTO;
+    }
+
+
+    @RequestMapping("/clients/{id}")
+    public ClientDTO getClientById(@PathVariable Long id){
+        return new ClientDTO(clientRepository.findById(id).orElse(null));
+
     }
 }
