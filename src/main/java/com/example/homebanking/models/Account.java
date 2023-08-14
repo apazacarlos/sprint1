@@ -22,6 +22,7 @@ public class Account {
     private LocalDate creationDate;
     private Double balance;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "account")

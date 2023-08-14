@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Client {
@@ -20,6 +23,9 @@ public class Client {
     private String firstName, lastName, email;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private Set<Account> accounts = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
+    private Set<ClientLoan> clientLoans = new HashSet<>();
 
     //constructores
     public Client() {
@@ -67,5 +73,14 @@ public class Client {
     public void addAccount(Account account){
         account.setClient(this);
         this.accounts.add(account);
+    }
+
+    public void addLoan(ClientLoan clientLoan) {
+        clientLoan.setClient(this);
+        this.clientLoans.add(clientLoan);
+    }
+
+    public List<ClientLoan> getLoans(){
+        return new ArrayList<>(clientLoans);
     }
 }

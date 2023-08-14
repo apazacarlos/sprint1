@@ -1,11 +1,7 @@
 package com.example.homebanking;
 
-import com.example.homebanking.models.Account;
-import com.example.homebanking.models.Client;
-import com.example.homebanking.models.Transaction;
-import com.example.homebanking.repositories.AccountRepository;
-import com.example.homebanking.repositories.ClientRepository;
-import com.example.homebanking.repositories.TransactionRepository;
+import com.example.homebanking.models.*;
+import com.example.homebanking.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.homebanking.models.TransactionType.CREDIT;
 import static com.example.homebanking.models.TransactionType.DEBIT;
@@ -25,7 +22,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository) {
 		return (args)-> {
 
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com");
@@ -60,6 +57,28 @@ public class HomebankingApplication {
 			account3.setBalance(account3.getBalance()-transaction2.getAmount());
 			transactionRepository.save(transaction2);
 			accountRepository.save(account3);
+
+
+			Loan loan1 = new Loan("Mortgage", 500000d, List.of(12,24,36,48,60));
+			Loan loan2 = new Loan("Personal", 100000d, List.of(6,12,24));
+			Loan loan3 = new Loan("Vehicle", 300000d, List.of(6,12,24,36));
+
+			loanRepository.save(loan1);
+			loanRepository.save(loan2);
+			loanRepository.save(loan3);
+
+			ClientLoan clientLoan1 = new ClientLoan(400000d, 60, client, loan1);
+			ClientLoan clientLoan2 = new ClientLoan(50000d, 12, client, loan2);
+
+			clientLoanRepository.save(clientLoan1);
+			clientLoanRepository.save(clientLoan2);
+
+			ClientLoan clientLoan3 = new ClientLoan(100000d, 24, client1, loan2);
+			ClientLoan clientLoan4 = new ClientLoan(200000d, 36, client1, loan3);
+
+			clientLoanRepository.save(clientLoan3);
+			clientLoanRepository.save(clientLoan4);
+
 		};
 	}
 
