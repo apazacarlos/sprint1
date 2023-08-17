@@ -11,9 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.example.homebanking.models.TransactionType.CREDIT;
-import static com.example.homebanking.models.TransactionType.DEBIT;
-
 @SpringBootApplication
 public class HomebankingApplication {
 
@@ -22,7 +19,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository) {
 		return (args)-> {
 
 			Client client = new Client("Melba", "Morel", "melba@mindhub.com");
@@ -46,13 +43,13 @@ public class HomebankingApplication {
 			accountRepository.save(account4);
 
 
-			Transaction transaction1 = new Transaction("Varios", CREDIT, 850.51, LocalDateTime.now());
+			Transaction transaction1 = new Transaction("Varios", TransactionType.CREDIT, 850.51, LocalDateTime.now());
 			account1.addTransaction(transaction1);
 			account1.setBalance(account1.getBalance()+transaction1.getAmount());
 			transactionRepository.save(transaction1);
 			accountRepository.save(account1);
 
-			Transaction transaction2 = new Transaction("Varios", DEBIT, 1594.68, LocalDateTime.now());
+			Transaction transaction2 = new Transaction("Varios", TransactionType.DEBIT, 1594.68, LocalDateTime.now());
 			account3.addTransaction(transaction2);
 			account3.setBalance(account3.getBalance()-transaction2.getAmount());
 			transactionRepository.save(transaction2);
@@ -78,6 +75,18 @@ public class HomebankingApplication {
 
 			clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);
+
+			Card card1 = new Card("Melba Morel", CardType.DEBIT, CardColor.GOLD, "5444 6555 7666 8777", 678, LocalDate.now(), LocalDate.now().plusYears(5));
+			Card card2 = new Card("Melba Morel", CardType.CREDIT, CardColor.TITANIUM, "4333 5444 9888 7666", 250, LocalDate.now(), LocalDate.now().plusYears(5));
+			Card card3 = new Card("Carlos Apaza", CardType.DEBIT, CardColor.SILVER, "5152 6463 8685 0405", 749, LocalDate.now(), LocalDate.now().plusYears(5));
+
+			client.addCard(card1);
+			client.addCard(card2);
+			client1.addCard(card3);
+
+			cardRepository.save(card1);
+			cardRepository.save(card2);
+			cardRepository.save(card3);
 
 		};
 	}
