@@ -20,7 +20,7 @@ public class Client {
     @GenericGenerator(name = "native", strategy = "native")
     private Long id;
 
-    private String firstName, lastName, email;
+    private String firstName, lastName, email, password;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private Set<Account> accounts = new HashSet<>();
 
@@ -34,10 +34,11 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email) {
+    public Client(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
 
     //metodos
@@ -49,7 +50,7 @@ public class Client {
         return firstName;
     }
 
-    public void setName(String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -67,6 +68,14 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<Account> getAccounts() {
