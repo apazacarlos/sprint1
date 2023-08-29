@@ -10,6 +10,7 @@ public class ClientDTO {
     private Long id;
 
     private String firstName, lastName, email;
+    private Boolean isAdmin;
     private Set<AccountDTO> accounts;
     private Set<ClientLoanDTO> loans;
     private Set<CardDTO> cards;
@@ -19,6 +20,7 @@ public class ClientDTO {
         firstName = client.getFirstName();
         lastName = client.getLastName();
         email = client.getEmail();
+        isAdmin = client.getAdmin();
         accounts = client.getAccounts()
                 .stream()
                 .map(element -> new AccountDTO(element))
@@ -45,6 +47,10 @@ public class ClientDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
     }
 
     public Set<AccountDTO> getAccounts() {

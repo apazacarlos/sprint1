@@ -27,7 +27,8 @@ public class ClientController {
     @RequestMapping(path="/clients", method = RequestMethod.POST)
     public ResponseEntity<Client> register(
             @RequestParam String firstName, @RequestParam String lastName,
-            @RequestParam String email, @RequestParam String password){
+            @RequestParam String email, @RequestParam String password, @RequestParam Boolean isAdmin,
+            Authentication authentication){
 
                 if (firstName.isEmpty()|| lastName.isEmpty() || email.isEmpty() || password.isEmpty()){
                     return new ResponseEntity("Missing data", HttpStatus.FORBIDDEN);
@@ -37,7 +38,8 @@ public class ClientController {
                     return new ResponseEntity("Email ya existente", HttpStatus.FORBIDDEN);
                 }
 
-                clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password)));
+                clientRepository.save(new Client(firstName, lastName, email, passwordEncoder.encode(password), isAdmin));
+
                 return new ResponseEntity(HttpStatus.CREATED);
             }
 

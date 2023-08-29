@@ -26,11 +26,11 @@ public class HomebankingApplication {
 	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository) {
 		return (args)-> {
 
-			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("123456"));
+			Client client = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("123456"), false);
 			clientRepository.save(client);
-			Client client1 = new Client("Carlos", "Apaza", "charlie@mindhub.com", passwordEncoder.encode("456789"));
+			Client client1 = new Client("Carlos", "Apaza", "charlie@mindhub.com", passwordEncoder.encode("456789"), false);
 			clientRepository.save(client1);
-			Client client2 = new Client("Rodrigo", "Ribeiro", "rodrigo@mindhub.com", passwordEncoder.encode("asdfgh"));
+			Client client2 = new Client("Rodrigo", "Ribeiro", "rodrigo@mindhub.com", passwordEncoder.encode("asdfgh"), true);
 			clientRepository.save(client2);
 
 			Account account1 = new Account("VIN-001",5000d,LocalDate.now());

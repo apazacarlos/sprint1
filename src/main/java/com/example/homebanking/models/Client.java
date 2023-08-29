@@ -21,6 +21,7 @@ public class Client {
     private Long id;
 
     private String firstName, lastName, email, password;
+    private Boolean isAdmin;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private Set<Account> accounts = new HashSet<>();
 
@@ -34,11 +35,12 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String email, String password) {
+    public Client(String firstName, String lastName, String email, String password, Boolean isAdmin) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
 
     //metodos
@@ -76,6 +78,14 @@ public class Client {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
     }
 
     public Set<Account> getAccounts() {
