@@ -40,7 +40,7 @@ public class Client {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.isAdmin = isAdmin; //por defecto en false, servlet para ingreso de admin y que cambie esto a true
     }
 
     //metodos
