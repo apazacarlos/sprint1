@@ -41,15 +41,15 @@ public class HomebankingApplication {
 			accountRepository.save(account2);
 
 
-			Account account3 = new Account("VIN-001",4000d,LocalDate.now());
-			Account account4 = new Account("VIN-002",3500d,LocalDate.now().plusDays(1));
+			Account account3 = new Account("VIN-003",4000d,LocalDate.now());
+			Account account4 = new Account("VIN-004",3500d,LocalDate.now().plusDays(1));
 			client1.addAccount(account3);
 			client1.addAccount(account4);
 			accountRepository.save(account3);
 			accountRepository.save(account4);
 
-			Account account5 = new Account("VIN-001", 3700d, LocalDate.now());
-			Account account6 = new Account("VIN-002", 17500d, LocalDate.now().plusDays(1));
+			Account account5 = new Account("VIN-005", 3700d, LocalDate.now());
+			Account account6 = new Account("VIN-006", 17500d, LocalDate.now().plusDays(1));
 			client2.addAccount(account5);
 			client2.addAccount(account6);
 			accountRepository.save(account5);

@@ -13,7 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -45,16 +47,28 @@ public class AccountController {
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
+
+    @RequestMapping("/clients/current/accounts")
+    public Set<AccountDTO> getAccounts(Authentication authentication){
+        return clientRepository.findByEmail(authentication.getName()).getAccounts()
+                .stream().map(account -> new AccountDTO(account)).collect(Collectors.toSet());
+    }
+
     @PostMapping("/clients/current/accounts")
     public ResponseEntity<AccountDTO> createAccount(Authentication authentication){
 
         if(authentication != null){
-            int accountNumber = getRandomNumber(10000000, 99999999);
+            Integer accountNumber;
             Client client = clientRepository.findByEmail(authentication.getName());
             if(client.getAccounts().size() >= 3){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }else{
-                Account account = new Account(("VIN-"+accountNumber), 0d, LocalDate.now());
+                do {
+                    accountNumber = getRandomNumber(10000000, 99999999);
+                }
+                while(accountRepository.existsByNumber("VIN-"+ accountNumber));
+
+                Account account = new Account(("VIN-"+ accountNumber), 0d, LocalDate.now());
                 accountRepository.save(account);
                 client.addAccount(account);
                 clientRepository.save(client);

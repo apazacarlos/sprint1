@@ -21,7 +21,7 @@ public class Client {
     private Long id;
 
     private String firstName, lastName, email, password;
-    private Boolean isAdmin;
+    private Boolean isAdmin = false;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "client")
     private Set<Account> accounts = new HashSet<>();
 
@@ -40,7 +40,7 @@ public class Client {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.isAdmin = isAdmin; //por defecto en false, servlet para ingreso de admin y que cambie esto a true
     }
 
     //metodos

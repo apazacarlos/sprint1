@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.time.LocalDate;
 import java.util.Set;
-
-import static com.example.homebanking.models.CardType.CREDIT;
-import static com.example.homebanking.models.CardType.DEBIT;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -31,55 +28,41 @@ public class CardController {
     @Autowired
     private ClientRepository clientRepository;
 
-    public int getRandomCardNumber(int min, int max){
-        return (int) ((Math.random() * (max - min)) + min);
-    }
-    public int getRandomCvvCardNumber(int min, int max){
+    public int getRandomNumber(int min, int max){
         return (int) ((Math.random() * (max - min)) + min);
     }
 
+    @RequestMapping("clients/current/cards")
+    public Set<CardDTO> getCards(Authentication authentication){
+        return clientRepository.findByEmail(authentication.getName()).getCards()
+                .stream().map(card -> new CardDTO(card)).collect(Collectors.toSet());
+    }
     @PostMapping("/clients/current/cards")
     public ResponseEntity<CardDTO> createCards(Authentication authentication, @RequestParam CardColor cardColor, @RequestParam CardType cardType){
         if(authentication != null){
-            int cardNumber1 = getRandomCardNumber(1000, 9999);
-            int cardNumber2 = getRandomCardNumber(1000, 9999);
-            int cardNumber3 = getRandomCardNumber(1000, 9999);
-            int cardNumber4 = getRandomCardNumber(1000, 9999);
 
-            String cardNumber = cardNumber1 + " "+ cardNumber2+ " "+ cardNumber3+ " "+ cardNumber4;
+            String cardNumber;
 
-            int cvvNumber = getRandomCvvCardNumber(100, 999);
+            do{
+                int cardNumber1 = getRandomNumber(1000, 9999);
+                int cardNumber2 = getRandomNumber(1000, 9999);
+                int cardNumber3 = getRandomNumber(1000, 9999);
+                int cardNumber4 = getRandomNumber(1000, 9999);
+                cardNumber = cardNumber1 + " "+ cardNumber2+ " "+ cardNumber3+ " "+ cardNumber4;
+            }
+            while(cardRepository.existsByNumber(cardNumber));
+
+            int cvvNumber = getRandomNumber(100, 999);
             Client client = clientRepository.findByEmail(authentication.getName());
             String cardholder = client.getFirstName() + " " + client.getLastName();
-            Set<Card> cards = client.getCards();
-            int counterD = 0;
-            int counterC = 0;
-            for (Card element: cards){
-                if(element.getType()==DEBIT){
-                    counterD +=1;
-                }else if(element.getType()==CREDIT){
-                    counterC +=1;
-                }
-            }
-            if(counterD >= 3){
+
+            long numberOfCards = cardRepository.countCardByClientAndTypeAndColor(client, cardType, cardColor);
+            boolean existsCards = cardRepository.existsCardByClientAndTypeAndColor(client, cardType, cardColor);
+
+            if(numberOfCards >= 3 || existsCards){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }else if (counterD < 3){
+            }else{
                 Card card = new Card(cardholder,
-                        cardType,
-                        cardColor,
-                        cardNumber,
-                        cvvNumber,
-                        LocalDate.now(),
-                        LocalDate.now().plusYears(5));
-                cardRepository.save(card);
-                client.addCard(card);
-                clientRepository.save(client);
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            }else if(counterC >= 3){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }else if (counterC < 3){
-                Card card;
-                card = new Card(cardholder,
                         cardType,
                         cardColor,
                         cardNumber,
