@@ -23,8 +23,8 @@ public class WebAuthorization {
 
         http.authorizeRequests().antMatchers("/web/index.html", "/web/", "/web/css/**", "/web/js/**", "/web/img/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/clients").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts").hasAnyAuthority("CLIENT", "ADMIN")
-                .antMatchers("/api/clients/current/**", "/api/accounts/", "/api/accounts/{id}", "/api/clients/current/cards", "/api/transactions", "/api/clients/current/accounts").hasAnyAuthority("ADMIN", "CLIENT")
+                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts", "/api/loans").hasAnyAuthority("CLIENT", "ADMIN")
+                .antMatchers("/api/clients/current/**", "/api/accounts/", "/api/accounts/{id}", "/api/clients/current/cards", "/api/transactions", "/api/clients/current/accounts", "/api/loans").hasAnyAuthority("ADMIN", "CLIENT")
                 .antMatchers("/h2-console/**","/rest", "/api/").hasAuthority("ADMIN")
                 .antMatchers("/clients/current","/web/**").hasAuthority("CLIENT")
                 .anyRequest().denyAll();

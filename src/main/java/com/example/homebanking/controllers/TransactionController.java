@@ -58,7 +58,7 @@ public class TransactionController {
         //String fromAccount = accountRepository.findAccountByClient(clientAuthenticated);
         //Set<Account> accounts = clientAuthenticated.getAccounts();
         //Account fromAccount = accounts.stream().filter(account -> accountRepository.)
-        Account fromAccount = accountRepository.findByNumberAndClient(fromAccountNumber, clientAuthenticated);
+        Account fromAccount = accountRepository.findAccountByNumberAndClient(fromAccountNumber, clientAuthenticated);
 
         if ((fromAccountNumber.isBlank() || toAccountNumber.isBlank() || amount == null || description.isBlank())) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
@@ -74,7 +74,7 @@ public class TransactionController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }else{
 
-            Account toAccount = accountRepository.findByNumber(toAccountNumber);
+            Account toAccount = accountRepository.findAccountByNumber(toAccountNumber);
 
             //creo las transacciones
             Transaction debitTransaction = new Transaction(fromAccountNumber + " " + description, TransactionType.DEBIT, -amount, LocalDateTime.now());
